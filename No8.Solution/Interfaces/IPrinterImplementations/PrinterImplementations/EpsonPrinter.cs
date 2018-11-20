@@ -11,7 +11,7 @@ namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
         /// <summary>
         /// Name of printer.
         /// </summary>
-        public new static readonly string Name = "Epson";
+        private const string PrinterName = "Epson";
 
         /// <summary>
         /// Initializes a new instance of EpsonPrinter.
@@ -19,7 +19,7 @@ namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
         /// <param name="model">
         /// Printer model.
         /// </param>
-        public EpsonPrinter(string model) : base(Name, model)
+        public EpsonPrinter(string model) : base(PrinterName, model)
         {
         }
 

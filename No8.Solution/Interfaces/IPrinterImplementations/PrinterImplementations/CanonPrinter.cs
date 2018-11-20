@@ -11,7 +11,7 @@ namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
         /// <summary>
         /// Name of printer.
         /// </summary>
-        public new static string Name = "Canon";
+        private const string PrinterName = "Canon";
 
         /// <summary>
         /// Initializes a new instance of CanonPrinter.
@@ -19,7 +19,7 @@ namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
         /// <param name="model">
         /// Printer model.
         /// </param>
-        public CanonPrinter(string model) : base(Name, model)
+        public CanonPrinter(string model) : base(PrinterName, model)
         {
         }
 

@@ -56,7 +56,7 @@ namespace No8.Solution.Interfaces.IPrinterManagerImplementations
         /// print stream.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// printer must not be null.
+        /// printer and stream must not be null.
         /// </exception>
         public void Print(Printer printer, Stream stream)
         {
