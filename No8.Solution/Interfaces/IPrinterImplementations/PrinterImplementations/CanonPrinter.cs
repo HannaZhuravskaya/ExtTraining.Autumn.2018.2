@@ -18,5 +18,13 @@ namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
                 Console.WriteLine(stream.ReadByte());
             }
         }
+
+        private void InputValidation(Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream) + " must not be null.");
+            }
+        }
     }
 }

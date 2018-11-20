@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace No8.Solution.Interfaces.IPrinterImplementations
 {
     public abstract class Printer : IPrinter, IEquatable<Printer>
     {
-        public EventHandler<PrinterEventArgs> PrintStarted = delegate { };
-        public EventHandler<PrinterEventArgs> PrintCompleted = delegate { };
+        public EventHandler<PrinterEventArgs> StartPrinting = delegate { };
 
-        private Queue<Stream> _printQueueStreams = new Queue<Stream>();
-        private Queue<PrinterEventArgs> _printQueueEventArgs = new Queue<PrinterEventArgs>();
-
-        //private bool _isDisposed = false;
-
-        private bool _isWorking = false;
+        public EventHandler<PrinterEventArgs> FinishPrint = delegate { };
 
         protected internal Printer(string name, string model)
         {
+            InputValidation(name, model);
+
             Name = name;
             Model = model;
         }
@@ -28,24 +23,17 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
 
         public void Print(Stream stream)
         {
-            _printQueueStreams.Enqueue(stream);
-            _printQueueEventArgs.Enqueue(new PrinterEventArgs(this));
-
-            if (!_isWorking)
+            if (stream == null)
             {
-                _isWorking = true;
-                if (_printQueueStreams.Count != 0)
-                {
-                    var args = _printQueueEventArgs.Dequeue();
-                    args.Info = "Printing...";
-                    OnPrintStarted(this, args);
-                    PrintDocument(_printQueueStreams.Dequeue());
-                    args.Info = "Printing finished.";
-                    OnPrintCompleted(this, args);
-                }
-
-                _isWorking = false;
+                throw new ArgumentNullException(nameof(stream) + " must not be null.");
             }
+
+            var args = new PrinterEventArgs(this) { Info = "Printing..." };
+            OnStartPrinting(this, args);
+
+            PrintDocument(stream);
+            
+            OnFinishPrint(this, args);
         }
 
         public override string ToString()
@@ -85,7 +73,7 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
                 return false;
             }
 
-            return this.Equals((Printer) obj);
+            return this.Equals((Printer)obj);
         }
 
         public override int GetHashCode()
@@ -96,49 +84,31 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
             }
         }
 
-        protected virtual void OnPrintStarted(object sender, PrinterEventArgs e)
+        protected virtual void OnStartPrinting(object sender, PrinterEventArgs e)
         {
-            PrintStarted?.Invoke(this, e);
+            e.Info = "Printing...";
+            StartPrinting?.Invoke(this, e);
         }
 
-        protected virtual void OnPrintCompleted(object sender, PrinterEventArgs e)
+        protected virtual void OnFinishPrint(object sender, PrinterEventArgs e)
         {
-            PrintCompleted?.Invoke(this, e);
+            e.Info = "Print finished.";
+            FinishPrint?.Invoke(this, e);
         }
 
         protected abstract void PrintDocument(Stream stream);
 
-        /*public void Dispose()
+        private void InputValidation(string name, string model)
         {
-            if (!_isDisposed)
+            if (string.IsNullOrWhiteSpace(name))
             {
-                _isDisposed = true;
-                Dispose(true);
-                GC.SuppressFinalize(this);
+                throw new ArgumentException(nameof(name) + " must not be null, empty or whitespace.");
             }
-        }
-        
-        ~Printer()
-        {
-            if (!_isDisposed)
-            {
-                _isDisposed = true;
-                Dispose(false);
-            }
-        }
 
-        public void Close()
-        {
-            Dispose();
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+            if (string.IsNullOrWhiteSpace(model))
             {
-                // managed objects
+                throw new ArgumentException(nameof(model) + " must not be null, empty or whitespace.");
             }
-            // unmanaged objects and resources
-        }*/
+        }
     }
 }

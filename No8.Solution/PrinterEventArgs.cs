@@ -17,7 +17,7 @@ namespace No8.Solution
 
             if (printer == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(printer) + " must not be null.");
             }
 
             this.PrinterModel = printer.Model;
