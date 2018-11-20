@@ -3,17 +3,40 @@ using System.IO;
 
 namespace No8.Solution.Interfaces.IPrinterImplementations.PrinterImplementations
 {
+    /// <summary>
+    /// The implementation of Printer class.
+    /// </summary>
     public sealed class CanonPrinter : Printer
     {
+        /// <summary>
+        /// Name of printer.
+        /// </summary>
         public new static string Name = "Canon";
 
+        /// <summary>
+        /// Initializes a new instance of CanonPrinter.
+        /// </summary>
+        /// <param name="model">
+        /// Printer model.
+        /// </param>
         public CanonPrinter(string model) : base(Name, model)
         {
         }
 
+        /// <summary>
+        /// Logic of printing.
+        /// </summary>
+        /// <param name="stream">
+        /// print stream.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// stream must not be null.
+        /// </exception>
         protected override void PrintDocument(Stream stream)
         {
-             for (int i = 0; i < stream.Length; i++)
+            InputValidation(stream);
+
+            for (int i = 0; i < stream.Length; i++)
             {
                 Console.WriteLine(stream.ReadByte());
             }

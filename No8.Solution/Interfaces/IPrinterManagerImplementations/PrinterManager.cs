@@ -9,8 +9,20 @@ namespace No8.Solution.Interfaces.IPrinterManagerImplementations
     {
         private List<Printer> _printers = new List<Printer>();
 
+        /// <summary>
+        /// OnCurrent print event.
+        /// </summary>
         public event EventHandler<PrinterEventArgs> OnCurrentPrint;
 
+        /// <summary>
+        /// Add printer to IPrinterManager object.
+        /// </summary>
+        /// <param name="printer">
+        /// an instance of Printer class.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// printer must not be null.
+        /// </exception>
         public void AddPrinter(Printer printer)
         {
             InputValidation(printer);
@@ -34,6 +46,18 @@ namespace No8.Solution.Interfaces.IPrinterManagerImplementations
             }
         }
 
+        /// <summary>
+        /// Print on printer from stream.
+        /// </summary>
+        /// <param name="printer">
+        /// an instance of Printer class.
+        /// </param>
+        /// <param name="stream">
+        /// print stream.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// printer must not be null.
+        /// </exception>
         public void Print(Printer printer, Stream stream)
         {
            InputValidation(printer);
@@ -53,6 +77,18 @@ namespace No8.Solution.Interfaces.IPrinterManagerImplementations
             }
         }
 
+        /// <summary>
+        /// Returns IEnumerable of printers by name.
+        /// </summary>
+        /// <param name="name">
+        /// printer name.
+        /// </param>
+        /// <returns>
+        /// IEnumerable of printers by name.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// name must not be null, empty or whitespace.
+        /// </exception>
         public IEnumerable<Printer> GetPrinters(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -69,6 +105,12 @@ namespace No8.Solution.Interfaces.IPrinterManagerImplementations
             }
         }
 
+        /// <summary>
+        /// Returns IEnumerable of printers.
+        /// </summary>
+        /// <returns>
+        /// IEnumerable of printers.
+        /// </returns>
         public IEnumerable<Printer> GetPrinters()
         {
             foreach (var printer in _printers)

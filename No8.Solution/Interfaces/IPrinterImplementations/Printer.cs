@@ -5,10 +5,28 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
 {
     public abstract class Printer : IPrinter, IEquatable<Printer>
     {
+        /// <summary>
+        /// Calling events at the beginning of printing.
+        /// </summary>
         public EventHandler<PrinterEventArgs> StartPrinting = delegate { };
 
+        /// <summary>
+        /// Calling an event when printing is completed.
+        /// </summary>
         public EventHandler<PrinterEventArgs> FinishPrint = delegate { };
 
+        /// <summary>
+        /// Initializes a new instance of Printer.
+        /// </summary>
+        /// <param name="name">
+        /// Printer name.
+        /// </param>
+        /// <param name="model">
+        /// Printer model.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// name and model must not be null, empty or whitespace.
+        /// </exception>
         protected internal Printer(string name, string model)
         {
             InputValidation(name, model);
@@ -17,10 +35,25 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
             Model = model;
         }
 
+        /// <summary>
+        /// Printer name.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Printer model.
+        /// </summary>
         public string Model { get; }
 
+        /// <summary>
+        /// Print from stream.
+        /// </summary>
+        /// <param name="stream">
+        /// print stream.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// stream must not be null.
+        /// </exception>
         public void Print(Stream stream)
         {
             if (stream == null)
@@ -84,19 +117,28 @@ namespace No8.Solution.Interfaces.IPrinterImplementations
             }
         }
 
-        protected virtual void OnStartPrinting(object sender, PrinterEventArgs e)
+        /// <summary>
+        /// Logic of printing.
+        /// </summary>
+        /// <param name="stream">
+        /// print stream.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// stream must not be null.
+        /// </exception>
+        protected abstract void PrintDocument(Stream stream);
+
+        private void OnStartPrinting(object sender, PrinterEventArgs e)
         {
             e.Info = "Printing...";
             StartPrinting?.Invoke(this, e);
         }
 
-        protected virtual void OnFinishPrint(object sender, PrinterEventArgs e)
+        private void OnFinishPrint(object sender, PrinterEventArgs e)
         {
             e.Info = "Print finished.";
             FinishPrint?.Invoke(this, e);
         }
-
-        protected abstract void PrintDocument(Stream stream);
 
         private void InputValidation(string name, string model)
         {
