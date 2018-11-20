@@ -31,7 +31,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPrinterManager.cs" />
+    <Compile Include="Interfaces\IPrinterImplementations\PrinterImplementations\CanonPrinter.cs" />
+    <Compile Include="Interfaces\IPrinterImplementations\PrinterImplementations\EpsonPrinter.cs" />
+    <Compile Include="Interfaces\IPrinter.cs" />
+    <Compile Include="Interfaces\IPrinterImplementations\Printer.cs" />
+    <Compile Include="PrinterEventArgs.cs" />
+    <Compile Include="Interfaces\IPrinterManagerImplementations\PrinterManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
